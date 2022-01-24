@@ -1,5 +1,5 @@
 # Google-Scraper
-### It Scrapes Google for a Search Query
+### This Project Scrapes Google for a Search Query
 
 #### How to run this: 
 
@@ -7,20 +7,26 @@ First, extract the ZIP files in a folder, let's call it **main**.
 
 ##### You will need a Google service account json credentials file for authorization in pygshees: 
 1. Head to [Google Developers Console](https://console.developers.google.com/) and create a new project (or select the one you have.)
-  ![image](https://user-images.githubusercontent.com/53652715/150808514-67c3791a-7716-4998-8adc-8078e561dc49.png)
+
+![image](https://user-images.githubusercontent.com/53652715/150808514-67c3791a-7716-4998-8adc-8078e561dc49.png)
   
 2. You will be redirected to the Project Dashboard, there click on “Enable Apis and services”, search for “Sheets API”.
+  
   ![image](https://user-images.githubusercontent.com/53652715/150809142-7c62d195-577c-4bb2-b423-282efb8bda07.png)
 
 3. In the API screen click on ‘ENABLE’ to enable this API.
+  
   ![image](https://user-images.githubusercontent.com/53652715/150809095-4d6e1a91-9971-494f-93a5-f8972716a8b4.png)
 
 4. Similarly enable the “Drive API”. We require drives api for getting list of spreadsheets, deleting them etc.
 5. Go to “Credentials” tab and choose “Create Credentials > Service Account Key”.
 6. Next choose the service account as ‘App Engine default’ and Key type as JSON and click create:
+  
   ![image](https://user-images.githubusercontent.com/53652715/150808998-feb2dbde-e24e-4bf9-96e3-c3f64a1578a3.png)
 
-7. You will now be prompted to download a .json file. This file contains the necessary private key for account authorization. Name the file as **service_account_sheets.json**. ![image](https://user-images.githubusercontent.com/53652715/150808866-2c170cc8-de90-460b-801e-ea53ebe5ae00.png)
+7. You will now be prompted to download a .json file. This file contains the necessary private key for account authorization. Name the file as **service_account_sheets.json**. 
+
+![image](https://user-images.githubusercontent.com/53652715/150808866-2c170cc8-de90-460b-801e-ea53ebe5ae00.png)
 
 This is how this file may look like:
 >{
