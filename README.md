@@ -24,7 +24,7 @@ First, extract the ZIP files in a folder, let's call it **main**.
   
   ![image](https://user-images.githubusercontent.com/53652715/150808998-feb2dbde-e24e-4bf9-96e3-c3f64a1578a3.png)
 
-7. You will now be prompted to download a .json file. This file contains the necessary private key for account authorization. Name the file as **service_account_sheets.json**. 
+7. You will now be prompted to download a .json file. This file contains the necessary private key for account authorization. Name the file as **'service_account_sheets.json'**. 
 
   ![image](https://user-images.githubusercontent.com/53652715/150808866-2c170cc8-de90-460b-801e-ea53ebe5ae00.png)
 
