@@ -19,7 +19,7 @@ First, extract the ZIP files in a folder, let's call it **main**.
   ![image](https://user-images.githubusercontent.com/53652715/150809095-4d6e1a91-9971-494f-93a5-f8972716a8b4.png)
 
 4. Similarly enable the “Drive API”. We require drives api for getting list of spreadsheets, deleting them etc.
-5. Go to “Credentials” tab and choose “Create Credentials > Service Account Key”.
+5. Go to Sheets API screen, then go to “Credentials” tab and choose “Create Credentials > Service Account Key”.
 6. Next choose the service account as ‘App Engine default’ and Key type as JSON and click create:
   
   ![image](https://user-images.githubusercontent.com/53652715/150808998-feb2dbde-e24e-4bf9-96e3-c3f64a1578a3.png)
