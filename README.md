@@ -16,11 +16,11 @@
 
 ![image](https://user-images.githubusercontent.com/53652715/150821968-8513d05e-606a-4020-a28f-e6316abc0dd2.png)
 
-#### How to Run: 
+### How to Run: 
 
 First, extract the ZIP files in a folder, let's call it **main**.
 
-##### You will need a Google service account json credentials file for authorization in pygshees: 
+#### You will need a Google service account json credentials file for authorization in pygshees: 
 1. Head to [Google Developers Console](https://console.developers.google.com/) and create a new project (or select the one you have.)
 
   ![image](https://user-images.githubusercontent.com/53652715/150808514-67c3791a-7716-4998-8adc-8078e561dc49.png)
