@@ -4,3 +4,4 @@ pygsheets==2.0.5
 lxml
 django
 gunicorn
+whitenoise
