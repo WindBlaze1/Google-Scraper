@@ -1,5 +1,20 @@
 # Google-Scraper
-### This Project Scrapes Google for a Search Query
+### This Project Scrapes Google for a Search Query and Stores the results in a Google Spreadsheet
+#### It has an Elegant and Clean UI developed in Bootstrap Studio and the backend is written in Django
+
+### Some Screenshots of its working:
+
+![image](https://user-images.githubusercontent.com/53652715/150820332-d97c5b99-d16b-4ce9-92bd-bd887a3a6410.png)
+
+![image](https://user-images.githubusercontent.com/53652715/150820439-6b9b6037-eb77-49be-8a41-e960635d6108.png)
+
+### Results of Scraping:
+
+![image](https://user-images.githubusercontent.com/53652715/150820946-ce45f444-a79f-45cd-a99b-63c92ddc98cd.png)
+
+### Logs:
+
+![image](https://user-images.githubusercontent.com/53652715/150821968-8513d05e-606a-4020-a28f-e6316abc0dd2.png)
 
 #### How to Run: 
 
