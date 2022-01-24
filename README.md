@@ -1,7 +1,7 @@
 # Google-Scraper
 ### This Project Scrapes Google for a Search Query
 
-#### How to run this: 
+#### How to Run: 
 
 First, extract the ZIP files in a folder, let's call it **main**.
 
