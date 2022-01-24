@@ -1,0 +1,5 @@
+beautifulsoup4
+requests
+pygsheets==2.0.5
+lxml==3.4.2
+django
