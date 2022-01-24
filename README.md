@@ -8,7 +8,7 @@ First, extract the ZIP files in a folder, let's call it **main**.
 ##### You will need a Google service account json credentials file for authorization in pygshees: 
 1. Head to [Google Developers Console](https://console.developers.google.com/) and create a new project (or select the one you have.)
 
-![image](https://user-images.githubusercontent.com/53652715/150808514-67c3791a-7716-4998-8adc-8078e561dc49.png)
+  ![image](https://user-images.githubusercontent.com/53652715/150808514-67c3791a-7716-4998-8adc-8078e561dc49.png)
   
 2. You will be redirected to the Project Dashboard, there click on “Enable Apis and services”, search for “Sheets API”.
   
@@ -26,7 +26,7 @@ First, extract the ZIP files in a folder, let's call it **main**.
 
 7. You will now be prompted to download a .json file. This file contains the necessary private key for account authorization. Name the file as **service_account_sheets.json**. 
 
-![image](https://user-images.githubusercontent.com/53652715/150808866-2c170cc8-de90-460b-801e-ea53ebe5ae00.png)
+  ![image](https://user-images.githubusercontent.com/53652715/150808866-2c170cc8-de90-460b-801e-ea53ebe5ae00.png)
 
 This is how this file may look like:
 >{
