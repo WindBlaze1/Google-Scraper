@@ -44,11 +44,10 @@ def call_scrape(url, queries):
         wks_title = wks_title + '_' + i.split(' ')[0]
     wks_title = wks_title[1:]
     k = 1
-    id = 0
     for i in queries:
-        k,id = main_scrape(url,i,wks_title,id,k)
+        k,wks_title = main_scrape(url,i,wks_title,k)
 
-def main_scrape(URL,query,wks_title,id,k):
+def main_scrape(URL,query,wks_title,k):
     
     # open the google sheet
     gc = pygsheets.authorize(service_account_file='service_account_sheets.json')
@@ -88,7 +87,6 @@ def main_scrape(URL,query,wks_title,id,k):
         except pygsheets.PyGsheetsException:
             print('Worksheet Title:',wks_title)
             wks = sh.add_worksheet(title=wks_title,rows=50000,cols=14)
-            id = wks.id
         
         # Update heading value in the sheet
         wks.update_value('A1','Title')
@@ -99,7 +97,8 @@ def main_scrape(URL,query,wks_title,id,k):
     
     else:
         # work in same wks
-        wks = sh.worksheet('id',id)
+        print('Finding wks: ',wks_title)
+        wks = sh.worksheet('title',wks_title)
     i = 1
 
     # Link for accessing the Google Sheet
@@ -148,4 +147,4 @@ def main_scrape(URL,query,wks_title,id,k):
             print('Successfully scraped all pages!')
             break
     # print('Link to Result: ',your_sheet_link)
-    return k,id
+    return k,wks_title
