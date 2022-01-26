@@ -4,9 +4,9 @@
 
 ### Some Screenshots of its working:
 
-![image](https://user-images.githubusercontent.com/53652715/150820332-d97c5b99-d16b-4ce9-92bd-bd887a3a6410.png)
+![image](https://user-images.githubusercontent.com/53652715/151173346-d8304cc2-7277-4494-89c3-f26343ef454d.png)
 
-![image](https://user-images.githubusercontent.com/53652715/150820439-6b9b6037-eb77-49be-8a41-e960635d6108.png)
+![image](https://user-images.githubusercontent.com/53652715/151173424-a2357f6c-088c-4550-a5ff-33ec0b0d7fa1.png)
 
 ### Results of Scraping:
 
