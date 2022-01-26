@@ -50,7 +50,7 @@ def main_scrape(url,query):
     headers = {
             "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"
-        }
+    }
     # print(srch_str)
 
     # create a different worksheet for storing result of current query
