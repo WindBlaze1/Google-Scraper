@@ -32,8 +32,8 @@ def result(request):
     while len(url) == 0:
         None
     text = (','.join(queries))
-    if len(text) > 40:
-        text = text[0:40] + '...'
+    if len(text) > 45:
+        text = text[0:45] + '...'
     data = {'sheets_url':url[0], 'query_str': text}
     return render(request,'output.html',data)
 
@@ -53,11 +53,11 @@ def main_scrape(URL,query,wks_title,id,k):
     # open the google sheet
     gc = pygsheets.authorize(service_account_file='service_account_sheets.json')
     try:
-        sh = gc.open(title='test google')
+        sh = gc.open(title='scrape google')
     except pygsheets.PyGsheetsException:
         print('Spreadsheet Not Found!\nCreating New Spreadsheet...')
-        sh = gc.create(title='test google')
-        # sh.share('store3age@gmail.com',role='writer',type='user')
+        sh = gc.create(title='scrape google')
+        sh.share('store3age@gmail.com',role='writer',type='user')
         sh.share('', role='reader', type='anyone')
 
     srch_str = "+".join(query.split(' '))
