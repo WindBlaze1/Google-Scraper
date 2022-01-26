@@ -1,4 +1,6 @@
 db.sqlite3
-service_account_sheets.json
-test.py
 tempCodeRunnerFile.py
+test.py
+service_account_sheets.json
+*/__pycache__/
+__pycache__/
