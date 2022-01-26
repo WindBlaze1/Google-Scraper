@@ -5,4 +5,4 @@ lxml
 django
 gunicorn
 whitenoise
-sqlite3
+sqlite
