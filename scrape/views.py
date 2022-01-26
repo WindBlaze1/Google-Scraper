@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import functools
 from threading import *
 from time import sleep
 from bs4 import BeautifulSoup
@@ -17,75 +18,97 @@ def index(request):
 
 def result(request):
     url = []
+    # print = functools.partial(print, flush=True)
+    print('here')
     query = request.POST['inp_text']
+    print(query)
+    queries = query.split('\r\n')
     # if query == '':
     #     return render(request,'index.html')
-    print('query recieved: ',query)
-    t1 = Thread(target=main_scrape,args=[url,query])
+    print('queries recieved: ',queries)
+    t1 = Thread(target=call_scrape,args=[url,queries])
+    # t1 = Thread(target=main_scrape,args=[url,query])
     t1.start()
     while len(url) == 0:
         None
-    data = {'sheets_url':url[0], 'query_str':query}
+    text = (','.join(queries))
+    if len(text) > 40:
+        text = text[0:40] + '...'
+    data = {'sheets_url':url[0], 'query_str': text}
     return render(request,'output.html',data)
 
 
+def call_scrape(url, queries):
+    wks_title = ''
+    for i in queries:
+        wks_title = wks_title + '_' + i.split(' ')[0]
+    wks_title = wks_title[1:]
+    k = 1
+    id = 0
+    for i in queries:
+        k,id = main_scrape(url,i,wks_title,id,k)
 
-
-def main_scrape(url,query):
+def main_scrape(URL,query,wks_title,id,k):
     
     # open the google sheet
     gc = pygsheets.authorize(service_account_file='service_account_sheets.json')
     try:
-        sh = gc.open(title='scrape google')
+        sh = gc.open(title='test google')
     except pygsheets.PyGsheetsException:
         print('Spreadsheet Not Found!\nCreating New Spreadsheet...')
-        sh = gc.create(title='scrape google')
-        sh.share('store3age@gmail.com',role='writer',type='user')
+        sh = gc.create(title='test google')
+        # sh.share('store3age@gmail.com',role='writer',type='user')
         sh.share('', role='reader', type='anyone')
 
     srch_str = "+".join(query.split(' '))
     print('search string: ',srch_str)
-    wks_title = query
 
     headers = {
             "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"
     }
     # print(srch_str)
+    print('k is: ',k)
+    if k==1:
+        # create a different worksheet for storing result of current query
+        try:
+            # find a unique name for the worksheet 
+            # since same names can give errors
+            while(1):
+                wks = sh.worksheet('title',wks_title)
+                x = wks_title.rfind('#0')
+                if x==-1:
+                    wks_title = wks_title + '#01'
+                else:
+                    # print('Found:',x)
+                    wks_title = wks_title[0:x+2] + str(int(wks_title[x+2])+1)
+                # print(wks_title)
 
-    # create a different worksheet for storing result of current query
-    try:
-        # find a unique name for the worksheet 
-        # since same names can give errors
-        while(1):
-            wks = sh.worksheet('title',wks_title)
-            x = wks_title.rfind('#0')
-            if x==-1:
-                wks_title = wks_title + '#01'
-            else:
-                # print('Found:',x)
-                wks_title = wks_title[0:x+2] + str(int(wks_title[x+2])+1)
-            # print(wks_title)
-
-    # Found a unique name, then create the worksheet
-    except pygsheets.PyGsheetsException:
-        print('Worksheet Title:',wks_title)
-        wks = sh.add_worksheet(title=wks_title,rows=5000)
+        # Found a unique name, then create the worksheet
+        except pygsheets.PyGsheetsException:
+            print('Worksheet Title:',wks_title)
+            wks = sh.add_worksheet(title=wks_title,rows=50000,cols=14)
+            id = wks.id
+        
+        # Update heading value in the sheet
+        wks.update_value('A1','Title')
+        wks.update_value('B1','Link')
+        wks.cell('A1').set_text_format(attribute='bold',value=True)
+        wks.cell('B1').set_text_format(attribute='bold',value=True)
+        k = 2
+    
+    else:
+        # work in same wks
+        wks = sh.worksheet('id',id)
+    i = 1
 
     # Link for accessing the Google Sheet
     your_sheet_link = sh.url + '/view#gid=' + str(wks.id)
-    url.append(your_sheet_link)
-    print(f'Sheet Link[ {query}]:',your_sheet_link)
+    URL.append(your_sheet_link)
+    print(f'Sheet Link[ {query} ]:',your_sheet_link)
 
     # Get the search results
     url = "https://www.google.com/search?q="+srch_str+"&start=0"
-    i,k = 1,2
-
-    # Update heading value in the sheet
-    wks.update_value('A1','Title')
-    wks.update_value('B1','Link')
-    wks.cell('A1').set_text_format(attribute='bold',value=True)
-    wks.cell('B1').set_text_format(attribute='bold',value=True)
 
     n = 6
     # Scrape all results until link reaches the last page
@@ -116,7 +139,7 @@ def main_scrape(url,query):
             # print(head_link)
             # print()
         # wks.link()
-        print('   Saved!')
+        print('   Saved!',flush=True)
 
         url = soup.select_one("a#pnnext")
         if url:
@@ -124,4 +147,5 @@ def main_scrape(url,query):
         else:
             print('Successfully scraped all pages!')
             break
-    print('Link to Result: ',your_sheet_link)
+    # print('Link to Result: ',your_sheet_link)
+    return k,id
