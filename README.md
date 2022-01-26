@@ -10,7 +10,7 @@
 
 ### Results of Scraping:
 
-![image](https://user-images.githubusercontent.com/53652715/150820946-ce45f444-a79f-45cd-a99b-63c92ddc98cd.png)
+![image](https://user-images.githubusercontent.com/53652715/151173664-1564d0ae-22f1-4d65-b229-1d25ddf49244.png)
 
 ### Logs:
 
