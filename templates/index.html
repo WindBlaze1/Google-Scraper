@@ -53,7 +53,23 @@
       display: flex;
       flex-direction: column;
     "
-  >
+  > 
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2
+            style="
+              text-align: center;
+              font-family: Anaheim, sans-serif;
+              font-size: 50px;
+              margin-top:4vh;
+            "
+          >
+            Automated Google Scraper
+          </h2>
+        </div>
+      </div>
+    </div>
     <div
       style="
         background: rgba(255, 255, 255, 0.37);
@@ -62,23 +78,9 @@
         padding: 40px; /*filter: blur(5px);*/
       "
     >
+      
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h2
-              style="
-                text-align: center;
-                font-family: Anaheim, sans-serif;
-                font-size: 40px;
-              "
-            >
-              Automated Google Scraper
-            </h2>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row" style="margin-top: 5%; margin-bottom: 5%">
+        <div class="row" style=" margin-bottom: 5%">
           <div class="col-md-12">
             <form class="text-center" action="result" method="post">
                 {% csrf_token %}
@@ -103,8 +105,14 @@
                   name="inp_text"
                 /></textarea>
               </div>
+              <div class="form-group text-center" style="text-align: center;">
+                <p class="pulse animated">[Optional]<br>Add Custom Proxies (separated by Enter):</p>
+                <textarea class="form-control pulse animated" style="width: 40vh;height: 25vh;align-self: center;margin-left: 36%;"
+                  name="proxies"
+                ></textarea>
+            </div>
               <button
-                class="btn btn-outline-success btn-lg pulse animated"
+                class="btn btn-success btn-lg pulse animated"
                 type="submit"
                 style="
                   font-family: Actor, sans-serif;

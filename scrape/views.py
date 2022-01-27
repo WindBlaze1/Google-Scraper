@@ -1,10 +1,9 @@
 from django.shortcuts import render
-import functools
+import random
 from threading import *
 from time import sleep
 from bs4 import BeautifulSoup
 import pygsheets
-import os
 import requests
 # Create your views here.
 
@@ -19,14 +18,27 @@ def index(request):
 def result(request):
     url = []
     # print = functools.partial(print, flush=True)
-    print('here')
     query = request.POST['inp_text']
-    print(query)
-    queries = query.split('\r\n')
+    proxy = request.POST['proxies']
+    # print(query)
+    query = query.split('\r\n')
+    proxy = proxy.split('\r\n')
+    queries = []
+    proxies = []
+    for q in query:
+        q = q.strip(' ')
+        if q != '':
+            queries.append(q)
+    print('queries recieved:',queries)
+    for p in proxy:
+        p = p.strip(' ')
+        if p !='':
+            proxies.append(p)
+    if len(proxies) > 0:
+        print('proxies recieved:',proxies)
     # if query == '':
     #     return render(request,'index.html')
-    print('queries recieved: ',queries)
-    t1 = Thread(target=call_scrape,args=[url,queries])
+    t1 = Thread(target=call_scrape,args=[url,queries,proxies])
     # t1 = Thread(target=main_scrape,args=[url,query])
     t1.start()
     while len(url) == 0:
@@ -37,17 +49,45 @@ def result(request):
     data = {'sheets_url':url[0], 'query_str': text}
     return render(request,'output.html',data)
 
+# def get_proxy_list():
+#     resp = requests.get('https://proxylist.geonode.com/api/proxy-list?limit=50&page=1&sort_by=lastChecked&sort_type=desc&filterUpTime=100&protocols=http%2Chttps')
+#     return resp
 
-def call_scrape(url, queries):
+def proxy_request(user_proxy_list, url, **kwargs):
+    # proxy_list = get_proxy_list()
+    if user_proxy_list=='':
+        return requests.get(url,**kwargs)
+    proxy = 0
+    while proxy<len(user_proxy_list):
+        print('proxy:',proxy+1,'-->',user_proxy_list[proxy],end='')
+        try:
+            proxies = {"http": user_proxy_list[proxy], "https": user_proxy_list[proxy]}
+            response = requests.get(url, proxies=proxies, timeout=3, **kwargs)
+            print(f"Proxy currently being used: {proxy['https']}")
+            return response
+        except:
+            print("...Failed!")
+            # print(user_proxy_list)
+        proxy += 1
+            
+    return requests.get(url,**kwargs)
+
+def call_scrape(url, queries,proxies):
     wks_title = ''
     for i in queries:
         wks_title = wks_title + '_' + i.split(' ')[0]
     wks_title = wks_title[1:]
+    if len(wks_title)>100:
+        wks_title = wks_title[0:90]
     k = 1
+    t = 1
     for i in queries:
-        k,wks_title = main_scrape(url,i,wks_title,k)
+        print('query #',t,sep='')
+        k,wks_title = main_scrape(url,i,wks_title,k,proxies)
+        print(f'#{t}')
+        t += 1
 
-def main_scrape(URL,query,wks_title,k):
+def main_scrape(URL,query,wks_title,k,proxies):
     
     # open the google sheet
     gc = pygsheets.authorize(service_account_file='service_account_sheets.json')
@@ -86,7 +126,7 @@ def main_scrape(URL,query,wks_title,k):
         # Found a unique name, then create the worksheet
         except pygsheets.PyGsheetsException:
             print('Worksheet Title:',wks_title)
-            wks = sh.add_worksheet(title=wks_title,rows=50000,cols=14)
+            wks = sh.add_worksheet(title=wks_title,rows=30000,cols=2)
         
         # Update heading value in the sheet
         wks.update_value('A1','Title')
@@ -115,24 +155,28 @@ def main_scrape(URL,query,wks_title,k):
 
         # Uncomment this for getting only first 'n' pages
         # n-=1
-        print('Scraping page ',i,'[ ',query,' ]...',end='',flush=True,sep='')
-        req = requests.get(url,headers=headers).text
+        print('Scraping page ',i,'[ ',query,' ]...   ',end='',flush=True,sep='')
+        # req = requests.get(url,headers=headers).text
+        req = proxy_request(proxies,url,headers=headers)
         i+=1
-        soup = BeautifulSoup(req,'lxml')
+        soup = BeautifulSoup(req.text,'lxml')
         # print(BeautifulSoup.prettify(soup))
         
         # Find all links in a page
         # and store them in the worksheet
         # wks.unlink()
-        sleep(10)
         for container in soup.findAll('div', class_='tF2Cxc') + soup.findAll('div',class_="ct3b9e"):
             # print(f'Results: {len(container)}')
             head_link = container.a['href']
             head_text = container.find('h3', class_='LC20lb MBeuO DKV0Md').text
             l = 'A' + str(k)
             wks.update_value(l,head_text)
+            t = random.uniform(0.000,3.214)
+            sleep(t)
             l = 'B' + str(k)
             wks.update_value(l,head_link)
+            t = random.uniform(0.000,2.518)
+            sleep(t)
             k+=1
             # print(head_text)
             # print(head_link)
@@ -144,7 +188,7 @@ def main_scrape(URL,query,wks_title,k):
         if url:
             url = "https://www.google.com/" + url['href']
         else:
-            print('Successfully scraped all pages!')
+            print('completed query: ',query,end='')
             break
     # print('Link to Result: ',your_sheet_link)
     return k,wks_title
