@@ -66,7 +66,7 @@ def proxy_request(user_proxy_list, url, **kwargs):
             print(f"Proxy currently being used: {proxy['https']}")
             return response
         except:
-            print("...Failed!")
+            print("...   Failed!")
             # print(user_proxy_list)
         proxy += 1
             
@@ -83,11 +83,11 @@ def call_scrape(url, queries,proxies):
     t = 1
     for i in queries:
         print('query #',t,sep='')
-        k,wks_title = main_scrape(url,i,wks_title,k,proxies)
+        k,wks_title = main_scrape(url,i,wks_title,k,proxies,len(queries))
         print(f'#{t}')
         t += 1
 
-def main_scrape(URL,query,wks_title,k,proxies):
+def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
     
     # open the google sheet
     gc = pygsheets.authorize(service_account_file='service_account_sheets.json')
@@ -126,7 +126,7 @@ def main_scrape(URL,query,wks_title,k,proxies):
         # Found a unique name, then create the worksheet
         except pygsheets.PyGsheetsException:
             print('Worksheet Title:',wks_title)
-            wks = sh.add_worksheet(title=wks_title,rows=30000,cols=2)
+            wks = sh.add_worksheet(title=wks_title,rows=210*total_q_num,cols=2)
         
         # Update heading value in the sheet
         wks.update_value('A1','Title')
@@ -137,7 +137,7 @@ def main_scrape(URL,query,wks_title,k,proxies):
     
     else:
         # work in same wks
-        print('Finding wks: ',wks_title)
+        print('Finding worksheet: ',wks_title)
         wks = sh.worksheet('title',wks_title)
     i = 1
 
