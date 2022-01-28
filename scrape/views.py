@@ -126,7 +126,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
         # Found a unique name, then create the worksheet
         except pygsheets.PyGsheetsException:
             print('Worksheet Title:',wks_title)
-            wks = sh.add_worksheet(title=wks_title,rows=210*total_q_num,cols=2)
+            wks = sh.add_worksheet(title=wks_title,rows=500*total_q_num,cols=2)
         
         # Update heading value in the sheet
         wks.update_value('A1','Title')
