@@ -171,7 +171,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
             head_text = container.find('h3', class_='LC20lb MBeuO DKV0Md').text
             l = 'A' + str(k)
             wks.update_value(l,head_text)
-            t = random.uniform(0.000,3.214)
+            t = random.uniform(0.000,2.214)
             sleep(t)
             l = 'B' + str(k)
             wks.update_value(l,head_link)
