@@ -57,12 +57,14 @@ def proxy_request(user_proxy_list, url, **kwargs):
     # proxy_list = get_proxy_list()
     if user_proxy_list=='':
         return requests.get(url,**kwargs)
-    proxy = random.randint(0,len(user_proxy_list))
+    random.shuffle(user_proxy_list)
+    # proxy = random.randint(0,len(user_proxy_list))
+    proxy = 0
     while proxy<len(user_proxy_list):
-        print('proxy:',proxy+1,'-->',user_proxy_list[proxy],end='')
+        print('current proxy -->',user_proxy_list[proxy],end='')
         try:
             proxies = {"http": user_proxy_list[proxy], "https": user_proxy_list[proxy]}
-            response = requests.get(url, proxies=proxies, timeout=5, **kwargs)
+            response = requests.get(url, proxies=proxies, timeout=1, **kwargs)
             print(f"Proxy currently being used: {proxy['https']}")
             return response
         except:
