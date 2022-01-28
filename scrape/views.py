@@ -57,7 +57,7 @@ def proxy_request(user_proxy_list, url, **kwargs):
     # proxy_list = get_proxy_list()
     if user_proxy_list=='':
         return requests.get(url,**kwargs)
-    proxy = random.random(0,len(user_proxy_list))
+    proxy = random.randint(0,len(user_proxy_list))
     while proxy<len(user_proxy_list):
         print('proxy:',proxy+1,'-->',user_proxy_list[proxy],end='')
         try:
