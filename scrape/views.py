@@ -29,13 +29,13 @@ def result(request):
         q = q.strip(' ')
         if q != '':
             queries.append(q)
-    print('queries recieved:',queries)
+    print(len(queries),'queries recieved:',queries)
     for p in proxy:
         p = p.strip(' ')
         if p !='':
             proxies.append(p)
     if len(proxies) > 0:
-        print('proxies recieved:',proxies)
+        print(len(proxies),'proxies recieved:',proxies)
     # if query == '':
     #     return render(request,'index.html')
     t1 = Thread(target=call_scrape,args=[url,queries,proxies])
@@ -82,7 +82,7 @@ def call_scrape(url, queries,proxies):
     k = 1
     t = 1
     for i in queries:
-        print('query #',t,sep='')
+        print(':: QUERY #',t,' ::',sep='')
         k,wks_title = main_scrape(url,i,wks_title,k,proxies,len(queries))
         print(f'#{t}')
         t += 1
