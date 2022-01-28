@@ -20,20 +20,30 @@ def result(request):
     # print = functools.partial(print, flush=True)
     query = request.POST['inp_text']
     proxy = request.POST['proxies']
-    # print(query)
+    proxy_url = request.POST['proxy_url']
+    req = ''
+    try:
+        req = requests.get(proxy_url).text
+    except:
+        print('Error: Proxy url could not be parsed!')
+    print('url parse success:',proxy_url)
     query = query.split('\r\n')
-    proxy = proxy.split('\r\n')
+    proxy = proxy.split('\r\n') + req.split('\r\n')
     queries = []
     proxies = []
     for q in query:
         q = q.strip(' ')
-        if q != '':
+        if q!='':
             queries.append(q)
     print(len(queries),'queries recieved:',queries)
     for p in proxy:
         p = p.strip(' ')
-        if p !='':
+        c = p.count(':')
+        if c==1:
             proxies.append(p)
+        if c==3:
+            p = p.split(':')
+            proxies.append(p[2]+':'+p[3]+'@'+p[0]+':'+p[1])
     if len(proxies) > 0:
         print(len(proxies),'proxies recieved:',proxies)
     # if query == '':
@@ -63,15 +73,27 @@ def proxy_request(user_proxy_list, url, **kwargs):
     while proxy<len(user_proxy_list):
         print('current proxy -->',user_proxy_list[proxy],end='')
         try:
-            proxies = {"http": user_proxy_list[proxy], "https": user_proxy_list[proxy]}
-            response = requests.get(url, proxies=proxies, timeout=1, **kwargs)
-            print(f"Proxy currently being used: {proxy['https']}")
+
+            proxies = {"http": 'http://' + user_proxy_list[proxy], "https": 'http://' + user_proxy_list[proxy]}
+            response = requests.get(url, proxies=proxies, timeout=8)
+            t = response.text
+            if t.find('unusual traffic from ') != -1 or t.find('Google Zoeken') != -1 or t.find('solveSimpleChallenge') != -1:
+                raise Exception('')
+                return requests.get(url,**kwargs)
+            print("... SUCCESS!")
+            if response.text.find('error'):
+                return requests.get(url,**kwargs)
+            print(' ')
             return response
         except:
             print("...   Failed!")
             # print(user_proxy_list)
+        
+        # proxies = {"http": 'http://' + user_proxy_list[proxy], "https": 'http://' + user_proxy_list[proxy]}
+        # response = requests.get(url, proxies=proxies, timeout=10,**kwargs)
+        # print(f"Proxy success: {proxies['https']}")
         proxy += 1
-            
+
     return requests.get(url,**kwargs)
 
 def call_scrape(url, queries,proxies):
@@ -86,7 +108,7 @@ def call_scrape(url, queries,proxies):
     for i in queries:
         print(':: QUERY #',t,' ::',sep='')
         k,wks_title = main_scrape(url,i,wks_title,k,proxies,len(queries))
-        print(f'#{t}')
+        print(f'{t}: {i}')
         t += 1
 
 def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
@@ -121,8 +143,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
                 if x==-1:
                     wks_title = wks_title + '#01'
                 else:
-                    # print('Found:',x)
-                    wks_title = wks_title[0:x+2] + str(int(wks_title[x+2])+1)
+                    wks_title = wks_title[0:x+2] + str(int(wks_title[x+2:])+1)
                 # print(wks_title)
 
         # Found a unique name, then create the worksheet
@@ -155,7 +176,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
     # Scrape all results until link reaches the last page
     while(n):
 
-        # Uncomment this for getting only first 'n' pages
+        # Uncomment this for getting only first 'n' pages of every search result
         # n-=1
         print('Scraping page ',i,'[ ',query,' ]...   ',end='',flush=True,sep='')
         # req = requests.get(url,headers=headers).text
@@ -173,7 +194,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
             head_text = container.find('h3', class_='LC20lb MBeuO DKV0Md').text
             l = 'A' + str(k)
             wks.update_value(l,head_text)
-            t = random.uniform(0.000,3.214)
+            t = random.uniform(0.000,2.214)
             sleep(t)
             l = 'B' + str(k)
             wks.update_value(l,head_link)
@@ -190,7 +211,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
         if url:
             url = "https://www.google.com/" + url['href']
         else:
-            print('completed query: ',query,end='')
+            print('completed query#',end='')
             break
     # print('Link to Result: ',your_sheet_link)
     return k,wks_title
