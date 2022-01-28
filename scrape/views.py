@@ -57,12 +57,12 @@ def proxy_request(user_proxy_list, url, **kwargs):
     # proxy_list = get_proxy_list()
     if user_proxy_list=='':
         return requests.get(url,**kwargs)
-    proxy = 0
+    proxy = random.random(0,len(user_proxy_list))
     while proxy<len(user_proxy_list):
         print('proxy:',proxy+1,'-->',user_proxy_list[proxy],end='')
         try:
             proxies = {"http": user_proxy_list[proxy], "https": user_proxy_list[proxy]}
-            response = requests.get(url, proxies=proxies, timeout=3, **kwargs)
+            response = requests.get(url, proxies=proxies, timeout=5, **kwargs)
             print(f"Proxy currently being used: {proxy['https']}")
             return response
         except:
@@ -171,7 +171,7 @@ def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
             head_text = container.find('h3', class_='LC20lb MBeuO DKV0Md').text
             l = 'A' + str(k)
             wks.update_value(l,head_text)
-            t = random.uniform(0.000,2.214)
+            t = random.uniform(0.000,3.214)
             sleep(t)
             l = 'B' + str(k)
             wks.update_value(l,head_link)
