@@ -5,6 +5,7 @@ from time import sleep
 from bs4 import BeautifulSoup
 import pygsheets
 import requests
+import gc
 # Create your views here.
 
 
@@ -110,6 +111,8 @@ def call_scrape(url, queries,proxies):
         k,wks_title = main_scrape(url,i,wks_title,k,proxies,len(queries))
         print(f'{t}: {i}')
         t += 1
+        gc.collect()
+    print('All queries completed!')
     exit()
 
 def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
