@@ -101,8 +101,8 @@ def call_scrape(url, queries,proxies):
     for i in queries:
         wks_title = wks_title + '_' + i.split(' ')[0]
     wks_title = wks_title[1:]
-    if len(wks_title)>100:
-        wks_title = wks_title[0:90]
+    if len(wks_title)>15:
+        wks_title = wks_title[0:15]
     k = 1
     t = 1
     for i in queries:
@@ -110,6 +110,7 @@ def call_scrape(url, queries,proxies):
         k,wks_title = main_scrape(url,i,wks_title,k,proxies,len(queries))
         print(f'{t}: {i}')
         t += 1
+    exit()
 
 def main_scrape(URL,query,wks_title,k,proxies,total_q_num):
     
