@@ -195,7 +195,7 @@ def main_scrape(inp):
             head_link = container.a['href']
             l = 'A' + str(k)
             wks.update_value(l,head_link)
-            t = random.uniform(0.000,3.214)
+            t = random.uniform(0.000,5.214)
             sleep(t)
             k+=1
             # print(head_link)
