@@ -151,7 +151,7 @@ def call_scrape(url, queries,proxies):
     print(f'Sheet Link[ {wks_title} ]:',str(wks.url))
 
     for i in queries:
-        print('\n\t:: QUERY #',t,' ::\n',sep='')
+        print('\n\t:: QUERY #',t,' ::',sep='')
         inp = [i,k,proxies,wks]
         k = main_scrape(inp)
         print(f'{t}: {i}')
@@ -185,8 +185,9 @@ def main_scrape(inp):
         # n-=1
         print('Scraping page ',i,'[ ',query,' ]...   ',end='',flush=True,sep='')
         # req = requests.get(url,headers=headers).text
-        if end_time-start_time<10 :
-            sleep(6-end_time+start_time)
+        tm = random.uniform(5.412,10.752)
+        if end_time-start_time<tm :
+            sleep(tm-end_time+start_time)
         req = proxy_request(proxies,url,headers=headers)
         start_time = perf_counter()
         i+=1
@@ -201,7 +202,7 @@ def main_scrape(inp):
             head_link = container.a['href']
             l = 'A' + str(k)
             wks.update_value(l,head_link)
-            t = random.uniform(0.000,5.214)
+            t = random.uniform(0.000,6.214)
             sleep(t)
             k+=1
             # print(head_link)
