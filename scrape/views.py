@@ -1,16 +1,17 @@
 from django.shortcuts import render
 import random
 from threading import *
-from time import sleep
+from time import sleep, perf_counter
 from bs4 import BeautifulSoup
 import pygsheets
 import requests
-import gc
+import gc, asyncio
 # Create your views here.
 
 
 
 def index(request):
+    gc.collect()
     return render(request,'index.html')
 
 
@@ -18,6 +19,7 @@ def index(request):
 
 def result(request):
     url = []
+    gc.collect()
     # print = functools.partial(print, flush=True)
     query = request.POST['inp_text']
     proxy = request.POST['proxies']
@@ -175,6 +177,7 @@ def main_scrape(inp):
     url = "https://www.google.com/search?q="+srch_str+"&start=0"
 
     n = 6
+    start_time, end_time = 0,0
     # Scrape all results until link reaches the last page
     while(n):
 
@@ -182,7 +185,10 @@ def main_scrape(inp):
         # n-=1
         print('Scraping page ',i,'[ ',query,' ]...   ',end='',flush=True,sep='')
         # req = requests.get(url,headers=headers).text
+        if end_time-start_time<10 :
+            sleep(6-end_time+start_time)
         req = proxy_request(proxies,url,headers=headers)
+        start_time = perf_counter()
         i+=1
         soup = BeautifulSoup(req.text,'lxml')
         # print(BeautifulSoup.prettify(soup))
@@ -208,6 +214,7 @@ def main_scrape(inp):
         else:
             print('completed query#',end='')
             break
+        end_time = perf_counter()
     # print('Link to Result: ',your_sheet_link)
     del url,soup,req,srch_str
     gc.collect()
