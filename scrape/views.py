@@ -141,7 +141,7 @@ def call_scrape(url, queries,proxies):
     t = 1
     
     # if gc.isenabled() == False:
-    #     gc.enable()
+    # gc.enable()
 
     for i in queries:
         print('\n\t:: QUERY #',t,' ::\n',sep='')
@@ -207,5 +207,5 @@ def main_scrape(query,k,proxies,wks):
             break
     # print('Link to Result: ',your_sheet_link)
     del url,soup,req,srch_str
-    # gc.collect()
+    gc.collect()
     return k
