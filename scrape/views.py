@@ -216,6 +216,7 @@ def main_scrape(inp):
             print('completed query#',end='')
             break
         end_time = perf_counter()
+        gc.collect()
     # print('Link to Result: ',your_sheet_link)
     del url,soup,req,srch_str
     gc.collect()
