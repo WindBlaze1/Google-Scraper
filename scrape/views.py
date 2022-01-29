@@ -45,6 +45,7 @@ def result(request):
         if c==3:
             p = p.split(':')
             proxies.append(p[2]+':'+p[3]+'@'+p[0]+':'+p[1])
+    del query, proxy
     if len(proxies) > 0:
         print(len(proxies),'proxies recieved:',proxies)
     # if query == '':
@@ -56,6 +57,7 @@ def result(request):
     text = (','.join(queries))
     if len(text) > 45:
         text = text[0:45] + '...'
+    del queries,proxies,proxy_url
     data = {'sheets_url':url[0], 'query_str': text}
     return render(request,'output.html',data)
 
@@ -143,17 +145,21 @@ def call_scrape(url, queries,proxies):
     # if gc.isenabled() == False:
     # gc.enable()
 
+    # Link for accessing the Google Sheet
+    print(f'Sheet Link[ {wks_title} ]:',str(wks.url))
+
     for i in queries:
         print('\n\t:: QUERY #',t,' ::\n',sep='')
-        k = main_scrape(i,k,proxies,wks)
+        inp = [i,k,proxies,wks]
+        k = main_scrape(inp)
         print(f'{t}: {i}')
         t += 1
-        # gc.collect()
+    del wks,sh,proxies,wks_title
     print('All queries completed!')
     exit()
 
-def main_scrape(query,k,proxies,wks):
-    
+def main_scrape(inp):
+    query,k,proxies,wks = inp[0],inp[1],inp[2],inp[3]
     srch_str = "+".join(query.split(' '))
     print('search string: ',srch_str)
 
@@ -164,9 +170,6 @@ def main_scrape(query,k,proxies,wks):
     
     print('k is: ',k)
     i = 1
-
-    # Link for accessing the Google Sheet
-    print(f'Sheet Link[ {query} ]:',str(wks.url))
 
     # Get the search results
     url = "https://www.google.com/search?q="+srch_str+"&start=0"
