@@ -4,17 +4,17 @@
 
 ### Some Screenshots of its working:
 
-![image](https://user-images.githubusercontent.com/53652715/151173346-d8304cc2-7277-4494-89c3-f26343ef454d.png)
+![image](https://user-images.githubusercontent.com/53652715/151703753-7d58ad36-398e-4dbb-8493-e1f3c6b71699.png)
 
-![image](https://user-images.githubusercontent.com/53652715/151173424-a2357f6c-088c-4550-a5ff-33ec0b0d7fa1.png)
+![image](https://user-images.githubusercontent.com/53652715/151703768-7936a3c3-5119-415b-8653-14a4d3442a50.png)
 
 ### Results of Scraping:
 
-![image](https://user-images.githubusercontent.com/53652715/151173664-1564d0ae-22f1-4d65-b229-1d25ddf49244.png)
+![image](https://user-images.githubusercontent.com/53652715/151703834-cccc2937-42c6-490d-aa3e-c12fb54da3ec.png)
 
 ### Logs:
 
-![image](https://user-images.githubusercontent.com/53652715/150821968-8513d05e-606a-4020-a28f-e6316abc0dd2.png)
+![image](https://user-images.githubusercontent.com/53652715/151703810-c4af8035-f221-4cc5-b0b0-af41cfeaa55b.png)
 
 ### How to Run: 
 
